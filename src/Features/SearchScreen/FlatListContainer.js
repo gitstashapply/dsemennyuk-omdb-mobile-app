@@ -30,7 +30,6 @@ const FlatListContainer = props => {
     <FlatList
       style={{ marginBottom: 50 }}
       onMomentumScrollBegin={() => {
-        console.log("triggereed");
         setOnEndReachedCalledDuringMomentum(false);
       }}
       onEndReachedThreshold={0.01}

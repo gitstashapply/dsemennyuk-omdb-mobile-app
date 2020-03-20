@@ -44,6 +44,7 @@ export default class SearchScreenContainer extends React.Component {
       this.state.currentPage !== prevState.currentPage &&
       this.state.currentPage > prevState.currentPage
     ) {
+      console.log("Api call");
       const res = await Api.getMovies({
         inputValue: this.state.textInputValue,
         page: this.state.currentPage
@@ -63,7 +64,7 @@ export default class SearchScreenContainer extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <>
           <TextInput
             style={{
@@ -83,7 +84,7 @@ export default class SearchScreenContainer extends React.Component {
             />
           </TouchableWithoutFeedback>
         </>
-      </SafeAreaView>
+      </View>
     );
   }
 }
@@ -99,10 +100,7 @@ const ListItem = ({ item }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
+    flex: 1
   },
   item: {
     height: 60,
