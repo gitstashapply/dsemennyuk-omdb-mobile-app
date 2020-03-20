@@ -44,7 +44,6 @@ export default class SearchScreenContainer extends React.Component {
       this.state.currentPage !== prevState.currentPage &&
       this.state.currentPage > prevState.currentPage
     ) {
-      console.log("Api call");
       const res = await Api.getMovies({
         inputValue: this.state.textInputValue,
         page: this.state.currentPage
@@ -78,6 +77,7 @@ export default class SearchScreenContainer extends React.Component {
           />
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <FlatListContainer
+              navigation={this.props.navigation}
               data={this.state.data}
               incrementPage={this.incrementPage}
               currentPage={this.state.currentPage}

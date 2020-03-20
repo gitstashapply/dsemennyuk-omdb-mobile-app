@@ -1,5 +1,12 @@
 class Api {
-  baseUrl = "http://www.omdbapi.com/?i=tt3896198&apikey=b9488f42";
+  baseUrl = "http://www.omdbapi.com/?apikey=b9488f42";
+
+  getMovieById = async id => {
+    const url = `${this.baseUrl}&i=${id}`;
+    const res = await this.get({ url });
+
+    return res;
+  };
 
   getMovies = async ({ inputValue, type, page = 1 }) => {
     const body = {

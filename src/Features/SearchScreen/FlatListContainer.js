@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { search } from "../../../mockData";
 import Api from "../../Services/Api";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const FlatListContainer = props => {
   const [
@@ -21,7 +22,6 @@ const FlatListContainer = props => {
   const fetchData = () => {
     if (!onEndReachedCalledDuringMomentum) {
       props.incrementPage();
-
       setOnEndReachedCalledDuringMomentum(true);
     }
   };
@@ -38,16 +38,29 @@ const FlatListContainer = props => {
       keyExtractor={item => {
         return item.imdbID;
       }}
-      renderItem={ListItem}
+      renderItem={item => (
+        <ListItem navigation={props.navigation} item={item.item} />
+      )}
     />
   );
 };
 
-const ListItem = ({ item }) => {
+const ListItem = ({ item, navigation }) => {
   return (
-    <View style={styles.item}>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate({
+          routeName: "DetailedScreen",
+          params: {
+            id: item.imdbID,
+            title: item.Title
+          }
+        });
+      }}
+      style={styles.item}
+    >
       <Text style={styles.title}>{item.Title}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
