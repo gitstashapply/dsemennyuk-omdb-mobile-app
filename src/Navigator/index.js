@@ -6,10 +6,10 @@ import DetailedScreenContainer from "../Features/DetailedScreen";
 const AppNavigator = createStackNavigator(
   {
     SearchScreen: SearchScreenContainer,
-    DetailedScreen: DetailedScreenContainer
+    DetailedScreen: DetailedScreenContainer,
   },
   {
-    initialRouteName: "SearchScreen"
+    initialRouteName: "SearchScreen",
   }
 );
 

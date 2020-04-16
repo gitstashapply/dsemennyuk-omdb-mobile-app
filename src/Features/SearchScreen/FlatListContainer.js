@@ -3,20 +3,16 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   FlatList,
-  SafeAreaView,
-  TouchableWithoutFeedback,
-  Keyboard
+  Image,
+  Dimensions,
 } from "react-native";
-import { search } from "../../../mockData";
-import Api from "../../Services/Api";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const FlatListContainer = props => {
+const FlatListContainer = (props) => {
   const [
     onEndReachedCalledDuringMomentum,
-    setOnEndReachedCalledDuringMomentum
+    setOnEndReachedCalledDuringMomentum,
   ] = React.useState(true);
 
   const fetchData = () => {
@@ -28,17 +24,16 @@ const FlatListContainer = props => {
 
   return (
     <FlatList
-      style={{ marginBottom: 50 }}
       onMomentumScrollBegin={() => {
         setOnEndReachedCalledDuringMomentum(false);
       }}
       onEndReachedThreshold={0.01}
       onEndReached={() => fetchData()}
       data={props.data}
-      keyExtractor={item => {
-        return item.imdbID;
+      keyExtractor={(item, index) => {
+        return index.toString();
       }}
-      renderItem={item => (
+      renderItem={(item) => (
         <ListItem navigation={props.navigation} item={item.item} />
       )}
     />
@@ -53,13 +48,20 @@ const ListItem = ({ item, navigation }) => {
           routeName: "DetailedScreen",
           params: {
             id: item.imdbID,
-            title: item.Title
-          }
+            title: item.Title,
+          },
         });
       }}
       style={styles.item}
     >
-      <Text style={styles.title}>{item.Title}</Text>
+      <View style={{ maxWidth: "80%" }}>
+        <Text style={styles.title}>{item.Title}</Text>
+        <Text>{`${item.Type} ${item.Year}`}</Text>
+      </View>
+      <Image
+        style={{ width: 50, height: 50 }}
+        source={{ uri: `${item.Poster}` }}
+      />
     </TouchableOpacity>
   );
 };
@@ -71,18 +73,26 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   item: {
-    height: 60,
-    width: 300,
+    height: 80,
+    width: Dimensions.get("screen").width * 0.9,
+    padding: 8,
     backgroundColor: "#f9c2ff",
-    padding: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginVertical: 8,
-    marginHorizontal: 16
   },
   title: {
     color: "black",
-    fontSize: 12
-  }
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  subtitle: {
+    color: "black",
+    fontSize: 16,
+    fontWeight: "300",
+  },
 });

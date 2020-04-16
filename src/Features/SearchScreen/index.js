@@ -1,13 +1,11 @@
 import React from "react";
 import {
   StyleSheet,
-  Text,
   View,
   TextInput,
-  FlatList,
   SafeAreaView,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import { search } from "../../../mockData";
 import Api from "../../Services/Api";
@@ -17,12 +15,18 @@ export default class SearchScreenContainer extends React.Component {
   state = {
     currentPage: 1,
     textInputValue: "",
-    data: undefined
+    data: undefined,
+  };
+
+  static navigationOptions = () => {
+    return {
+      title: "Search",
+    };
   };
 
   incrementPage = () => {
     this.setState({
-      currentPage: this.state.currentPage + 1
+      currentPage: this.state.currentPage + 1,
     });
   };
 
@@ -33,10 +37,10 @@ export default class SearchScreenContainer extends React.Component {
     ) {
       const res = await Api.getMovies({
         inputValue: this.state.textInputValue,
-        page: this.state.currentPage
+        page: this.state.currentPage,
       });
       this.setState({
-        data: res.data
+        data: res.data,
       });
     }
 
@@ -46,61 +50,60 @@ export default class SearchScreenContainer extends React.Component {
     ) {
       const res = await Api.getMovies({
         inputValue: this.state.textInputValue,
-        page: this.state.currentPage
+        page: this.state.currentPage,
       });
 
       this.setState({
-        data: [...this.state.data, ...res.data]
+        data: [...this.state.data, ...res.data],
       });
     }
   };
 
-  onTextInputValueChange = event => {
+  onTextInputValueChange = (event) => {
     this.setState({
-      textInputValue: event.nativeEvent.text
+      textInputValue: event.nativeEvent.text,
     });
   };
 
   render() {
     return (
-      <View style={styles.container}>
-        <>
-          <TextInput
-            style={{
-              height: 40,
-              width: 200,
-              borderColor: "gray",
-              borderWidth: 1
-            }}
-            value={this.state.textInputValue}
-            onChange={this.onTextInputValueChange}
-          />
-          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <FlatListContainer
-              navigation={this.props.navigation}
-              data={this.state.data}
-              incrementPage={this.incrementPage}
-              currentPage={this.state.currentPage}
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <>
+            <TextInput
+              placeholder={"Search..."}
+              style={{
+                padding: 4,
+                height: 40,
+                width: "100%",
+                borderColor: "gray",
+                borderBottomWidth: 1,
+                marginBottom: 8,
+              }}
+              value={this.state.textInputValue}
+              onChange={this.onTextInputValueChange}
             />
-          </TouchableWithoutFeedback>
-        </>
-      </View>
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+              <FlatListContainer
+                navigation={this.props.navigation}
+                data={this.state.data}
+                incrementPage={this.incrementPage}
+                currentPage={this.state.currentPage}
+              />
+            </TouchableWithoutFeedback>
+          </>
+        </View>
+      </SafeAreaView>
     );
   }
 }
 
-const ListItem = ({ item }) => {
-  console.log(item);
-  return (
-    <View style={styles.item}>
-      <Text style={styles.title}>{item.Title}</Text>
-    </View>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    padding: 16,
+    alignItems: "center",
+    backgroundColor: "#FFF",
   },
   item: {
     height: 60,
@@ -108,10 +111,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#f9c2ff",
     padding: 20,
     marginVertical: 8,
-    marginHorizontal: 16
+    marginHorizontal: 16,
   },
   title: {
     color: "black",
-    fontSize: 12
-  }
+    fontSize: 12,
+  },
 });
